@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    background-color: #272727;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+}
+
+.elementPicker {
+    background-color: #4a4a4a;
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    width: 250px;
+    height: 350px;
+    border-radius: 20px;
+    box-shadow: 5px 5px 4px rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+
+.search {
+    width: 85%;
+    height: 6%;
+    padding: 5px 10px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #fff;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.search::placeholder {
+    color: #fff;
+}
+
+.list {
+    width: 90%;
+    height: 80%;
+    padding: 5px 10px;
+    overflow-y: scroll;
+    cursor: grab;
+}
+
+.list::-webkit-scrollbar {
+  width: 0; /* This hides the horizontal scrollbar */
+  height: 0; /* This hides the vertical scrollbar */
+}
+
+
+.listElements {
+    width: 90%;
+    height: 50px;
+    padding: 10px 10px;
+    text-align: left;
+    border: none;
+    outline: none;
+    color: #fff;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+hr {
+    width: 90%;
+}
+
+.elementDragger {
+    width: 60px;
+    height: 60px;
+    background-color: #4a4a4a;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    font-size: 15px;
+    z-index: 1000;
+    top: 5px;
+    left: 5px;
+    display: none;
+    font-size: 9px;
+}
+
+.s {
+    margin-top: 2px;
+}
+
+.name {
+    font-weight: 100;
+}
+
+.elementDraggerBox {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #fff;
+    position: absolute;
+    top: 1%;
+    left: 40%;
+}
+
+.cancelED {
+    width: 150px;
+    height: 50px;
+    border: none;
+    outline: none;
+    position: inherit;
+    position: absolute;
+    border-radius: 10px;
+    box-shadow: 5px 5px 4px rgba(255, 255, 255, 0.2);
+    background-color: #4a4a4a;
+    z-index: 10000000000000000000;
+    color: #fff;
+    display: none;
+    cursor: pointer;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+}
+
+.HAA, .SAA {
+   padding: 10px;
+   border: none;
+   outline: none;
+   position: absolute;
+   top: 10px;
+   left: 10px;
+   cursor: pointer;
+   border-radius: 10px;
+}
+
+.HAA {
+    display: none;
+}
+
+.periodicTable {
+    width: 75%;
+    height: 85%;
+    /* border: 1px solid #fff; */
+    position: absolute;
+    top: 12%;
+    left: 4%;
+}
+
+.d-none {
+    display: none!important;
+}
+
+.wrong {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999999999999999999999999999999999999999999999999;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: grid;
+    place-items: center;
+    display: none;
+}
+
+.message {
+    background-color: #4a4a4a;
+    width: 500px;
+    height: 250px;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    position: absolute;
+    left: 32.5%;
+}
+
+.wb {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sa, .ta, .ha {
+    width: 90%;
+    height: 100%;
+    border: 1px solid #fff;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #fff;
+}
+
+.ha {
+    display: none;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.r1 {
+    width: 100%;
+    height: 10%;
+
+}
+
+.r2 {
+    width: 11.12%;
+    height: 10%;
+
+}
+
+.r3 {
+    width: 33.36%;
+    height: 10%;
+    position: relative;
+    bottom: 10%;
+    left: 66.64%;
+}
+
+.r4 {
+    width: 11.12%;
+    height: 10%;
+    position: relative;
+    bottom: 10%;
+}
+
+.r5 {
+    width: 33.36%;
+    height: 10%;
+    position: relative;
+    bottom: 20%;
+    left: 66.64%;
+}
+
+.r6 {
+    width: 100%;
+    height: 10%;
+    position: relative;
+    bottom: 20%;
+}
+
+.r7 {
+    width: 100%;
+    height: 10%;
+    position: relative;
+    bottom: 20%;
+}
+
+.r8 {
+    width: 11.12%;
+    height: 10%;
+    position: relative;
+    bottom: 20%;
+}
+
+.r9 {
+    width: 11.12%;
+    height: 10%;
+    position: relative;
+    bottom: 20%;
+}
+
+.r10 {
+    width: 83.4%;
+    height: 10%;
+    position: relative;
+    bottom: 40%;
+    left: 16.6%;
+}
+
+.r11 {
+    width: 83.4%;
+    height: 10%;
+    position: relative;
+    bottom: 40%;
+    left: 16.6%;
+}
+
+.r12 {
+    width: 83.4%;
+    height: 10%;
+    position: relative;
+    bottom: 30%;
+    left: 16.6%;
+}
+
+.r13 {
+    width: 83.4%;
+    height: 10%;
+    position: relative;
+    bottom: 30%;
+    left: 16.6%;
+}
+
+.block {
+    width: 60px;
+    height: 60px;
+    border: 2px solid orange;
+    color: transparent;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+}
+
+.row .an {
+    position: relative;
+    right: 20px;
+    top: 5px;
+}
+
+.row .s, .row .name, .row .mass {
+    position: relative;
+    bottom: 5px;
+}
+
+.ana {
+    position: relative;
+    top: 5px;
+    right: 20px;
+    color: transparent;
+}
+
+.white {
+    color: #fff!important;
+}
+    </style>
+</head>
+<body>
+    <button class="cancelED">
+        Cancel
+    </button>
+
+    <div class="elementDraggerBox">
+        <div class="elementDragger">
+            <p class="ana"></p>
+            <h1 class="s"></h1>
+            <h4 class="name"></h4>
+        </div>
+    </div>
+
+    <div class="elementPicker">
+        <input type="text" placeholder="Search" class="search">
+        <hr />
+        <div class="list"></div>
+    </div>
+
+    <div class="periodicTable">
+        <div class="row r1"></div>
+        <div class="row r2"></div>
+        <div class="row r3"></div>
+        <div class="row r4"></div>
+        <div class="row r5"></div>
+        <div class="row r6"></div>
+        <div class="row r7"></div>
+        <div class="row r8"></div>
+        <div class="row r9"></div>
+        <div class="row r10"></div>
+        <div class="row r11"></div>
+        <div class="row r12"></div>
+        <div class="row r13"></div>
+    </div>
+
+    <div class="wrong">
+        <div class="message">
+            <h1>Sorry, you're wrong!</h1>
+
+            <div class="wb">
+                <button class="sa" onclick="sa()">Show Atomic Number</button>
+                <button class="ha" onclick="ha()">Hide Atomic Number</button>
+                <button class="ta" onclick="ta()">Try Again</button>
+            </div>
+        </div>
+    </div>
+    <script>
+
+const apiUrl = 'https://rudra-surati-code.github.io/Periodic-Table/data.json';
+const r1 = document.querySelector(".r1")
+const r2 = document.querySelector(".r2")
+const r3 = document.querySelector(".r3")
+const r4 = document.querySelector(".r4")
+const r5 = document.querySelector(".r5")
+const r6 = document.querySelector(".r6")
+const r7 = document.querySelector(".r7")
+const r8 = document.querySelector(".r8")
+const r9 = document.querySelector(".r9")
+const r10 = document.querySelector(".r10")
+const r11 = document.querySelector(".r11")
+const r12 = document.querySelector(".r12")
+const r13 = document.querySelector(".r13")
+
+fetch(apiUrl)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    const list = document.querySelector(".list");
+    const searchInput = document.querySelector(".search");
+
+    // r1
+    const startIndex = 0;
+    const endIndex = 1;
+    
+
+    // r1
+    const startIndex2 = 2;
+    const endIndex2= 3;
+    
+
+    // r1
+    const startIndex3 = 4;
+    const endIndex3 = 9;
+    
+
+    // r1
+    const startIndex4 = 10;
+    const endIndex4 = 11;
+    
+
+    // r1
+    const startIndex5 = 12;
+    const endIndex5 = 17;
+    
+
+    // r1
+    const startIndex6 = 18;
+    const endIndex6 = 35;
+    
+
+    // r1
+    const startIndex7 = 36;
+    const endIndex7 = 53;
+    
+
+    // r1
+    const startIndex8 = 54;
+    const endIndex8 = 55;
+    
+
+    // r1
+    const startIndex9 = 71;
+    const endIndex9 = 85;
+    
+
+    // r1
+    const startIndex10 = 86;
+    const endIndex10 = 87;
+    
+
+    // r1
+    const startIndex11 = 103;
+    const endIndex11 = 117;
+
+    const startIndex12 = 56;
+    const endIndex12 = 70;
+
+    const startIndex13 = 88
+    const endIndex13 = 102;
+
+    
+
+    for (let i = startIndex; i <= endIndex; i++) {
+      const rChild1 = document.createElement('div')
+      rChild1.classList.add('block')
+      r1.appendChild(rChild1)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild1.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex2; i <= endIndex2; i++) {
+      const rChild2 = document.createElement('div')
+      rChild2.classList.add('block')
+      r2.appendChild(rChild2)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild2.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex3; i <= endIndex3; i++) {
+      const rChild3 = document.createElement('div')
+      rChild3.classList.add('block')
+      r3.appendChild(rChild3)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild3.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex4; i <= endIndex4; i++) {
+      const rChild4 = document.createElement('div')
+      rChild4.classList.add('block')
+      r4.appendChild(rChild4)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild4.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex5; i <= endIndex5; i++) {
+      const rChild5 = document.createElement('div')
+      rChild5.classList.add('block')
+      r5.appendChild(rChild5)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild5.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex6; i <= endIndex6; i++) {
+      const rChild6 = document.createElement('div')
+      rChild6.classList.add('block')
+      r6.appendChild(rChild6)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild6.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex7; i <= endIndex7; i++) {
+      const rChild7 = document.createElement('div')
+      rChild7.classList.add('block')
+      r7.appendChild(rChild7)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild7.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex8; i <= endIndex8; i++) {
+      const rChild8 = document.createElement('div')
+      rChild8.classList.add('block')
+      r8.appendChild(rChild8)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild8.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex10; i <= endIndex10; i++) {
+      const rChild9 = document.createElement('div')
+      rChild9.classList.add('block')
+      r9.appendChild(rChild9)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild9.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex9; i <= endIndex9; i++) {
+      const rChild10 = document.createElement('div')
+      rChild10.classList.add('block')
+      r10.appendChild(rChild10)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild10.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex11; i <= endIndex11; i++) {
+      const rChild11 = document.createElement('div')
+      rChild11.classList.add('block')
+      r11.appendChild(rChild11)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild11.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex12; i <= endIndex12; i++) {
+      const rChild12 = document.createElement('div')
+      rChild12.classList.add('block')
+      r12.appendChild(rChild12)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild12.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+  for (let i = startIndex13; i <= endIndex13; i++) {
+      const rChild13 = document.createElement('div')
+      rChild13.classList.add('block')
+      r13.appendChild(rChild13)
+      const an = document.createElement('p')
+      const s = document.createElement('h1')
+      const name = document.createElement('h4')
+      const mass = document.createElement('p')
+      const am = parseFloat(data[i].atomicMass).toFixed(3)
+      an.textContent = data[i].atomicNumber
+      s.textContent = data[i].symbol
+      name.textContent = data[i].name
+      mass.textContent = am
+      rChild13.append(an, s, name, mass)
+      an.classList.add("an")
+      s.classList.add("s")
+      name.classList.add("name")
+      mass.classList.add("mass")
+  }
+
+    anything()
+
+
+    function anything() {
+        shuffleArray(data)
+        data.forEach(item => {
+            const name = document.createElement("button");
+            const span = document.createElement("span");
+            name.classList.add("listElements");
+            span.classList.add('d-none')
+            name.textContent = item.name;
+            span.textContent = item.symbol;
+            list.appendChild(name);
+            name.appendChild(span)
+        });
+    }
+
+    const items = Array.from(list.getElementsByTagName("button"));
+    searchInput.addEventListener("keyup", function () {
+        const searchTerm = searchInput.value.toLowerCase();
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+            item.style.display = "block";
+            } else {
+            item.style.display = "none";
+            }
+        });
+      });
+
+      const childElements = list.children;
+      let s = document.querySelector(".s");
+      let name = document.querySelector(".name");
+      let ana = document.querySelector(".ana")
+      list.addEventListener("click", function (event) {
+        const index = Array.from(childElements).indexOf(event.target);
+        if (index !== -1) {
+
+            s.innerHTML = data[index].symbol
+            name.innerHTML = data[index].name
+            ana.innerHTML = data[index].atomicNumber
+            draggableElement.style.display = "block"
+        }
+      });
+      
+     
+      
+      const blocks = document.querySelectorAll(".block")
+      
+        blocks.forEach(function (button) {
+            button.addEventListener('click', function (event) {
+              if(event.target.classList.value == "block") {
+                 const childElements = event.target.children[0].innerHTML;
+                 console.log(ana.innerHTML)
+                if(childElements == ana.innerHTML) {
+                  event.target.classList.add("white")
+                } else {
+                  document.querySelector(".wrong").style.display = "flex"
+                }
+              } else {
+                const childElementss = event.target.parentNode.children[0].innerHTML;
+                if(childElementss == ana.innerHTML) {
+                  event.target.parentNode.classList.add("white")
+                } else {
+                  document.querySelector(".wrong").style.display = "flex"
+                }
+              }
+            })
+        })
+    }
+  )
+  .catch(error => {
+    alert('Fetch error:', error);
+});
+
+const draggableElement = document.querySelector(".elementDragger");
+
+const customContextMenu = document.querySelector('.cancelED');
+
+function showContextMenu(x, y) {
+  customContextMenu.style.display = 'flex';
+  customContextMenu.style.left = x + 'px';
+  customContextMenu.style.top = y + 'px';
+}
+
+function hideContextMenu() {
+  customContextMenu.style.display = 'none';
+}
+
+draggableElement.addEventListener('contextmenu', function (event) {
+  event.preventDefault();
+
+  showContextMenu(event.clientX, event.clientY);
+
+});
+
+document.addEventListener('click', function () {
+  hideContextMenu();
+});
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    hideContextMenu();
+  }
+});
+
+customContextMenu.addEventListener('click', () => {
+    draggableElement.style.display = "none"
+    draggableElement.style.top = "5px"
+    draggableElement.style.left = "5px"
+
+})
+
+const ta = () => {
+    document.querySelector(".wrong").style.display = "none"
+    draggableElement.style.display = "none"
+    draggableElement.style.top = "5px"
+    draggableElement.style.left = "5px"
+}
+
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]]; // Swap elements at i and j
+    }
+}
+
+const sa = () => {
+  document.querySelector(".ana").classList.add("white")
+  document.querySelector(".wrong").style.display = "none"
+  document.querySelector(".sa").style.display = "none"
+  document.querySelector(".ha").style.display = "block"
+}
+
+const ha = () => {
+  document.querySelector(".ana").classList.remove("white")
+  document.querySelector(".wrong").style.display = "none"
+  document.querySelector(".sa").style.display = "none"
+  document.querySelector(".ha").style.display = "block"
+}
+    </script>
+</body>
+</html>
